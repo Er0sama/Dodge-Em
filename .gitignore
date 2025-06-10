@@ -1,0 +1,18 @@
+# Compiled files
+*.o
+*.exe
+*.out
+*.a
+*.so
+*.dll
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Build directories
+build/
+Debug/
+Release/
