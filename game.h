@@ -32,7 +32,6 @@ public:
 
     int redfood_num;   // Number of different Foods
     int greenfood_num; // that are going to be spawned in the game.
-    int yellowfood_num;
     int orangefood_num;
     int whitefood_num;
     food *redfood[60];
@@ -60,6 +59,47 @@ public:
         menu = new Menu("img/main.png");
         bg_texture.loadFromFile("img/lol.png");
         background.setTexture(bg_texture);
+    }
+
+    ~Game()
+    {
+        cleanup();
+    }
+
+    void cleanup()
+    {
+        delete Player;
+        Player = nullptr;
+        delete Enemy;
+        Enemy = nullptr;
+        delete Enemy2;
+        Enemy2 = nullptr;
+        for (int i = 0; i < 60; i++)
+            if (redfood[i] != nullptr)
+            {
+                delete redfood[i];
+                redfood[i] = nullptr;
+            }
+        for (int i = 0; i < 5; i++)
+            if (greenfood[i] != nullptr)
+            {
+                delete greenfood[i];
+                greenfood[i] = nullptr;
+            }
+        for (int i = 0; i < 5; i++)
+            if (orangefood[i] != nullptr)
+            {
+                delete orangefood[i];
+                orangefood[i] = nullptr;
+            }
+        for (int i = 0; i < 5; i++)
+            if (whitefood[i] != nullptr)
+            {
+                delete whitefood[i];
+                whitefood[i] = nullptr;
+            }
+        delete menu;
+        menu = nullptr;
     }
 
     void start_game()
@@ -170,10 +210,12 @@ public:
 
                         check_start_game = menu->pause_menu(window, Continue, exit_game);
 
-                        menu_sound.stop();
+                     menu_sound.stop();
                         if (!Continue) // If game continue is false then break loop to start a new game
                         {
                             this->save_score(Player->get_value());
+                            this->cleanup();
+
                             break;
                         }
                         else if (exit_game) // First saves current score then exits  the game
@@ -347,28 +389,28 @@ public:
                       //  there are different numbers in each round to this process is repeated at
                       //  beginning of each round
                         form = false;
-                        for (int i = 0; i < redfood_num; i++)
+                        for (int i = 0; i < 60; i++)
                             if (redfood[i] != nullptr)
                             {
                                 delete redfood[i];
                                 redfood[i] = nullptr;
                             }
 
-                        for (int i = 0; i < greenfood_num; i++)
+                        for (int i = 0; i < 5; i++)
                             if (greenfood[i] != nullptr)
                             {
                                 delete greenfood[i];
                                 greenfood[i] = nullptr;
                             }
 
-                        for (int i = 0; i < orangefood_num; i++)
+                        for (int i = 0; i < 5; i++)
                             if (orangefood[i] != nullptr)
                             {
                                 delete orangefood[i];
                                 orangefood[i] = nullptr;
                             }
 
-                        for (int i = 0; i < whitefood_num; i++)
+                        for (int i = 0; i < 5; i++)
                             if (whitefood[i] != nullptr)
                             {
                                 delete whitefood[i];
@@ -945,6 +987,7 @@ public:
                         if (!Continue) // If game continue is false then break loop to start a new game
                         {
                             this->save_score(Player->get_value());
+                            this->cleanup();
 
                             break;
                         }
@@ -973,6 +1016,30 @@ public:
                         Enemy = nullptr;
                         delete Enemy2;
                         Enemy2 = nullptr;
+                        for (int i = 0; i < redfood_num; i++)
+                            if (redfood[i] != nullptr)
+                            {
+                                delete redfood[i];
+                                redfood[i] = nullptr;
+                            }
+                        for (int i = 0; i < greenfood_num; i++)
+                            if (greenfood[i] != nullptr)
+                            {
+                                delete greenfood[i];
+                                greenfood[i] = nullptr;
+                            }
+                        for (int i = 0; i < orangefood_num; i++)
+                            if (orangefood[i] != nullptr)
+                            {
+                                delete orangefood[i];
+                                orangefood[i] = nullptr;
+                            }
+                        for (int i = 0; i < whitefood_num; i++)
+                            if (whitefood[i] != nullptr)
+                            {
+                                delete whitefood[i];
+                                whitefood[i] = nullptr;
+                            }
 
                         if (menu->game_won(window))
                         {
@@ -1011,6 +1078,7 @@ public:
                 }
             }
         }
+        cleanup();
     }
 
     void save_score(int currentScore)
